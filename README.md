@@ -1,4 +1,5 @@
-**SACCO SYSTEM PROJECT**
+ **SACCO SYSTEM PROJECT**
+                  
  **🏦 Nawiri SACCO Management System**
  It is a web-based application developed to assist Savings and Credit Cooperative Organizations (SACCOs) in managing member contributions, loan processing, financial tracking, and managing transactions. The system automates manual SACCO operations, improving accuracy, transparency, and member satisfaction.
 
