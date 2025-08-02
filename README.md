@@ -81,4 +81,7 @@ It supports both **administrators**;who manage the sacco  and **members**;who ca
 - XAMPP / WAMP / Built-in PHP Server
 
   
-@Nawiri Sacco Management System
+**@NAWIRI SACCO SYSTEM**
+
+**Github Repository (https://github.com/Shee440/nawiri-sacco-copy)**
+
