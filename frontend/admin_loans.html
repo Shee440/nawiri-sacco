@@ -1,0 +1,419 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+  <title>Admin Dashboard - Nawiri Sacco</title>
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+  <style>
+    :root {
+      --primary-color: #251269;
+      --primary-dark: #0d8143;
+      --secondary-color: #3a86ff;
+      --success-color: #153619;
+      --danger-color: #dc3545;
+      --warning-color: #ffc107;
+      --light-gray: #f8f9fa;
+      --medium-gray: #e9ecef;
+      --dark-gray: #495057;
+      --white: #ffffff;
+      --shadow: 0 4px 12px rgba(0, 0, 0, 0.1);
+      --border-radius: 8px;
+    }
+    
+    body {
+      font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+      background: linear-gradient(135deg, #f5f7fa 0%, #e4e8eb 100%);
+      margin: 0;
+      padding: 2rem;
+      color: #333;
+      min-height: 100vh;
+    }
+    
+    .container {
+      max-width: 1200px;
+      margin: 0 auto;
+    }
+    
+    .header {
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      margin-bottom: 2rem;
+      padding-bottom: 1rem;
+      border-bottom: 1px solid var(--medium-gray);
+    }
+    
+    .logo {
+      display: flex;
+      align-items: center;
+      gap: 1rem;
+    }
+    
+    .logo-icon {
+      width: 40px;
+      height: 40px;
+      background-color: var(--primary-color);
+      border-radius: 50%;
+      display: inline-flex;
+      align-items: center;
+      justify-content: center;
+      color: white;
+      font-size: 1.2rem;
+      font-weight: bold;
+    }
+    
+    h1 {
+      color: var(--primary-color);
+      margin: 0;
+      font-size: 1.8rem;
+    }
+    
+    .admin-info {
+      display: flex;
+      align-items: center;
+      gap: 0.5rem;
+    }
+    
+    .admin-info i {
+      color: var(--primary-color);
+    }
+    
+    .dashboard-stats {
+      display: grid;
+      grid-template-columns: repeat(4, 1fr);
+      gap: 1.5rem;
+      margin-bottom: 2rem;
+    }
+    
+    .stat-card {
+      background: var(--white);
+      padding: 1.5rem;
+      border-radius: var(--border-radius);
+      box-shadow: var(--shadow);
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      text-align: center;
+    }
+    
+    .stat-card i {
+      font-size: 2rem;
+      margin-bottom: 1rem;
+      color: var(--primary-color);
+    }
+    
+    .stat-card .value {
+      font-size: 1.8rem;
+      font-weight: bold;
+      color: var(--primary-color);
+    }
+    
+    .stat-card .label {
+      color: var(--dark-gray);
+      font-size: 0.9rem;
+    }
+    
+    .table-container {
+      background: var(--white);
+      padding: 1.5rem;
+      border-radius: var(--border-radius);
+      box-shadow: var(--shadow);
+      overflow-x: auto;
+    }
+    
+    table {
+      width: 100%;
+      border-collapse: collapse;
+      margin-top: 1rem;
+    }
+    
+    th, td {
+      padding: 1rem;
+      text-align: left;
+      border-bottom: 1px solid var(--medium-gray);
+    }
+    
+    th {
+      background: var(--primary-color);
+      color: var(--white);
+      font-weight: 600;
+      position: sticky;
+      top: 0;
+    }
+    
+    tr:hover {
+      background-color: var(--light-gray);
+    }
+    
+    .status {
+      padding: 0.5rem 1rem;
+      border-radius: 20px;
+      font-size: 0.8rem;
+      font-weight: bold;
+      text-transform: capitalize;
+    }
+    
+    .status-pending {
+      background-color: #fff3cd;
+      color: #856404;
+    }
+    
+    .status-approved {
+      background-color: #d4edda;
+      color: #155724;
+    }
+    
+    .status-rejected {
+      background-color: #f8d7da;
+      color: #721c24;
+    }
+    
+    .action-buttons {
+      display: flex;
+      gap: 0.5rem;
+    }
+    
+    .btn {
+      padding: 0.5rem 1rem;
+      border: none;
+      border-radius: var(--border-radius);
+      color: white;
+      cursor: pointer;
+      font-weight: 600;
+      display: flex;
+      align-items: center;
+      gap: 0.5rem;
+      transition: all 0.2s ease;
+    }
+    
+    .btn:hover {
+      transform: translateY(-2px);
+      box-shadow: 0 2px 8px rgba(0, 0, 0, 0.1);
+    }
+    
+    .btn-approve {
+      background-color: var(--success-color);
+    }
+    
+    .btn-approve:hover {
+      background-color: #218838;
+    }
+    
+    .btn-reject {
+      background-color: var(--danger-color);
+    }
+    
+    .btn-reject:hover {
+      background-color: #c82333;
+    }
+    
+    .btn-view {
+      background-color: var(--secondary-color);
+    }
+    
+    .btn-view:hover {
+      background-color: #0069d9;
+    }
+    
+    .logout-btn {
+      background: var(--danger-color);
+      color: white;
+      padding: 0.5rem 1rem;
+      border-radius: var(--border-radius);
+      text-decoration: none;
+      font-weight: 600;
+      display: flex;
+      align-items: center;
+      gap: 0.5rem;
+      transition: background 0.3s ease;
+    }
+    
+    .logout-btn:hover {
+      background: #c82333;
+    }
+    
+    @media (max-width: 1024px) {
+      .dashboard-stats {
+        grid-template-columns: repeat(2, 1fr);
+      }
+    }
+    
+    @media (max-width: 768px) {
+      .dashboard-stats {
+        grid-template-columns: 1fr;
+      }
+      
+      .header {
+        flex-direction: column;
+        gap: 1rem;
+        align-items: flex-start;
+      }
+      
+      th, td {
+        padding: 0.75rem 0.5rem;
+        font-size: 0.9rem;
+      }
+      
+      .action-buttons {
+        flex-direction: column;
+      }
+    }
+  </style>
+</head>
+<body>
+  <div class="container">
+    <div class="header">
+      <div class="logo">
+        <div class="logo-icon">NS</div>
+        <h1>Loan Applications Dashboard</h1>
+      </div>
+      <div class="admin-info">
+        <i class="fas fa-user-shield"></i>
+        <span>Admin: <?php echo htmlspecialchars($_SESSION['admin_name'] ?? 'Administrator'); ?></span>
+        <a href="../backend/logout.php" class="logout-btn">
+          <i class="fas fa-sign-out-alt"></i> Logout
+        </a>
+      </div>
+    </div>
+    
+    <div class="dashboard-stats">
+      <div class="stat-card">
+        <i class="fas fa-file-invoice-dollar"></i>
+        <div class="value" id="total-loans">0</div>
+        <div class="label">Total Loans</div>
+      </div>
+      <div class="stat-card">
+        <i class="fas fa-clock"></i>
+        <div class="value" id="pending-loans">0</div>
+        <div class="label">Pending</div>
+      </div>
+      <div class="stat-card">
+        <i class="fas fa-check-circle"></i>
+        <div class="value" id="approved-loans">0</div>
+        <div class="label">Approved</div>
+      </div>
+      <div class="stat-card">
+        <i class="fas fa-times-circle"></i>
+        <div class="value" id="rejected-loans">0</div>
+        <div class="label">Rejected</div>
+      </div>
+    </div>
+    
+    <div class="table-container">
+      <table>
+        <thead>
+          <tr>
+            <th>Loan ID</th>
+            <th>Applicant</th>
+            <th>Amount</th>
+            <th>Purpose</th>
+            <th>Date Applied</th>
+            <th>Status</th>
+            <th>Actions</th>
+          </tr>
+        </thead>
+        <tbody id="loanTableBody">
+          <!-- Filled by JS -->
+        </tbody>
+      </table>
+    </div>
+  </div>
+<script>
+document.addEventListener('DOMContentLoaded', () => {
+  fetchLoans();
+  setInterval(fetchLoans, 30000); // Auto-refresh every 30s
+});
+
+function fetchLoans() {
+  fetch('../backend/get_loan_applications.php', { credentials: 'include' })
+    .then(res => res.json())
+    .then(data => {
+      updateStats(data);
+      renderLoanTable(data);
+    })
+    .catch(err => console.error('Error fetching loan applications:', err));
+}
+
+function updateStats(data) {
+  document.getElementById('total-loans').textContent = data.length;
+  document.getElementById('pending-loans').textContent = data.filter(l => l.status === 'pending').length;
+  document.getElementById('approved-loans').textContent = data.filter(l => l.status === 'approved').length;
+  document.getElementById('rejected-loans').textContent = data.filter(l => l.status === 'rejected').length;
+}
+
+function renderLoanTable(data) {
+  const tbody = document.getElementById('loanTableBody');
+  tbody.innerHTML = '';
+
+  data.forEach(loan => {
+    const row = document.createElement('tr');
+    const formattedDate = new Date(loan.created_at).toLocaleDateString('en-US', {
+      year: 'numeric', month: 'short', day: 'numeric'
+    });
+
+    row.innerHTML = `
+      <td>${loan.loan_id}</td>
+      <td>${loan.user_name || `User ${loan.user_id}`}</td>
+      <td>KES ${parseFloat(loan.amount).toFixed(2)}</td>
+      <td>${loan.purpose}</td>
+      <td>${formattedDate}</td>
+      <td><span class="status status-${loan.status}">${loan.status}</span></td>
+      <td>
+        <div class="action-buttons">
+          <button class="btn btn-view" onclick="viewLoanDetails(${loan.loan_id})">
+            <i class="fas fa-eye"></i> View
+          </button>
+          ${loan.status === 'pending' ? `
+            <button class="btn btn-approve" onclick="updateLoan(${loan.loan_id}, 'approved')">
+              <i class="fas fa-check"></i> Approve
+            </button>
+            <button class="btn btn-reject" onclick="updateLoan(${loan.loan_id}, 'rejected')">
+              <i class="fas fa-times"></i> Reject
+            </button>
+          ` : ''}
+        </div>
+      </td>`;
+
+    tbody.appendChild(row);
+  });
+}
+
+function updateLoan(loan_id, status) {
+  if (!confirm(`Are you sure you want to ${status} this loan?`)) return;
+
+  fetch('../backend/update_loan_status.php', {
+    method: 'POST',
+    headers: { 'Content-Type': 'application/json' },
+    credentials: 'include',
+    body: JSON.stringify({ loan_id, status })
+  })
+    .then(res => res.json())
+    .then(data => {
+      if (data.success) {
+        showAlert('success', `Loan ${status} successfully.`);
+        fetchLoans();
+      } else {
+        showAlert('error', data.message || 'Failed to update status');
+      }
+    })
+    .catch(err => {
+      console.error('Error updating loan:', err);
+      showAlert('error', 'Error processing request');
+    });
+}
+
+function viewLoanDetails(loan_id) {
+  alert(`Viewing details for Loan ID: ${loan_id}`);
+}
+
+function showAlert(type, message) {
+  const alert = document.createElement('div');
+  alert.className = `alert ${type}`;
+  alert.textContent = message;
+  document.body.appendChild(alert);
+  setTimeout(() => alert.remove(), 3000);
+}
+</script>
+</body>
+</html>

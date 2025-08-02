@@ -1,0 +1,313 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+  <title>Transfer Funds - Nawiri Sacco</title>
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+  <style>
+    :root {
+      --primary-color:#2563eb;
+      --primary-dark: #1d4ed8;
+      --secondary-color: #3a86ff;
+      --success-color: #23cfcf;
+      --danger-color: #dc3545;
+      --light-gray: #f8f9fa;
+      --medium-gray: #e9ecef;
+      --dark-gray: #495057;
+      --white: #ffffff;
+      --shadow: 0 4px 12px rgba(0, 0, 0, 0.1);
+      --border-radius: 8px;
+    }
+    
+    body {
+      font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+      background: linear-gradient(135deg, #f5f7fa 0%, #e4e8eb 100%);
+      margin: 0;
+      padding: 0;
+      min-height: 100vh;
+    }
+    
+    .container {
+      max-width: 800px;
+      margin: 2rem auto;
+      padding: 0 1rem;
+    }
+    
+    .card {
+      background: var(--white);
+      border-radius: var(--border-radius);
+      box-shadow: var(--shadow);
+      padding: 2rem;
+      margin-bottom: 2rem;
+    }
+    
+    .header {
+      text-align: center;
+      margin-bottom: 2rem;
+    }
+    
+    .logo {
+      width: 60px;
+      height: 60px;
+      background-color: var(--primary-color);
+      border-radius: 50%;
+      display: inline-flex;
+      align-items: center;
+      justify-content: center;
+      color: white;
+      font-size: 1.5rem;
+      font-weight: bold;
+      margin-bottom: 1rem;
+    }
+    
+    h2 {
+      color: var(--primary-color);
+      margin-bottom: 0.5rem;
+    }
+    
+    .subtitle {
+      color: var(--dark-gray);
+      margin-bottom: 1.5rem;
+    }
+    
+    .form-group {
+      margin-bottom: 1.5rem;
+    }
+    
+    label {
+      display: block;
+      margin-bottom: 0.5rem;
+      font-weight: 600;
+      color: var(--dark-gray);
+    }
+    
+    .input-with-icon {
+      position: relative;
+    }
+    
+    .input-with-icon i {
+      position: absolute;
+      left: 0.75rem;
+      top: 50%;
+      transform: translateY(-50%);
+      color: var(--primary-color);
+    }
+    
+    input[type="text"],
+    input[type="number"] {
+      width: 100%;
+      padding: 0.75rem 0.75rem 0.75rem 2.5rem;
+      border: 1px solid var(--medium-gray);
+      border-radius: var(--border-radius);
+      font-family: inherit;
+      font-size: 1rem;
+      transition: all 0.3s ease;
+    }
+    
+    input:focus {
+      outline: none;
+      border-color: var(--primary-color);
+      box-shadow: 0 0 0 3px rgba(46, 139, 87, 0.2);
+    }
+    
+    .btn {
+      background: var(--primary-color);
+      color: white;
+      padding: 0.75rem 1.5rem;
+      border: none;
+      border-radius: var(--border-radius);
+      font-weight: 600;
+      font-size: 1rem;
+      cursor: pointer;
+      width: 100%;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      gap: 0.5rem;
+      transition: all 0.3s ease;
+    }
+    
+    .btn:hover {
+      background: var(--primary-dark);
+      transform: translateY(-2px);
+      box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+    }
+    
+    .alert {
+      padding: 1rem;
+      border-radius: var(--border-radius);
+      margin-bottom: 1.5rem;
+      display: none;
+      align-items: center;
+      gap: 0.75rem;
+    }
+    
+    .alert-success {
+      background-color: #d4edda;
+      color: #205274;
+    }
+    
+    .alert-error {
+      background-color: #f8d7da;
+      color: #721c24;
+    }
+    
+    .account-balance {
+      background: var(--light-gray);
+      padding: 1rem;
+      border-radius: var(--border-radius);
+      margin-bottom: 1.5rem;
+      text-align: center;
+      font-weight: 600;
+    }
+    
+    .account-balance span {
+      color: var(--primary-color);
+      font-size: 1.2rem;
+    }
+    
+    @media (max-width: 768px) {
+      .container {
+        padding: 0 0.5rem;
+      }
+      
+      .card {
+        padding: 1.5rem;
+      }
+      
+      th, td {
+        padding: 0.75rem;
+        font-size: 0.9rem;
+      }
+    }
+  </style>
+</head>
+<body>
+  <div class="container">
+    <div class="card">
+      <div class="header">
+        <div class="logo">NS</div>
+        <h2>Funds Transfer</h2>
+        <p class="subtitle">Transfer money securely between accounts</p>
+      </div>
+      
+      <!-- Alert messages -->
+      <div id="alert-message" class="alert" style="display: none;"></div>
+      
+      <!-- Current balance display -->
+      <div class="account-balance">
+        Available Balance: <span id="current-balance">KES 0.00</span>
+      </div>
+      
+      <form id="transferForm">
+        <div class="form-group">
+          <label for="recipient_account">Recipient Account</label>
+          <div class="input-with-icon">
+            <i class="fas fa-user-friends"></i>
+            <input type="text" id="recipient_account" name="recipient_account" 
+                   placeholder="Enter account number" required>
+          </div>
+        </div>
+        
+        <div class="form-group">
+          <label for="amount">Transfer Amount</label>
+          <div class="input-with-icon">
+            <i class="fas fa-money-bill-wave"></i>
+            <input type="number" id="amount" name="amount" 
+                   placeholder="Enter amount" required step="0.01" min="1">
+          </div>
+        </div>
+        
+        <!-- CSRF Token -->
+        <input type="hidden" name="csrf_token" value="<?php echo $_SESSION['csrf_token']; ?>">
+        
+        <button type="submit" class="btn">
+          <i class="fas fa-exchange-alt"></i> Transfer Funds
+        </button>
+      </form>
+    </div>
+  </div>
+
+  <script>
+    document.addEventListener("DOMContentLoaded", function() {
+      // Fetch initial data
+      fetchCurrentBalance();
+      
+      // Handle form submission
+      document.getElementById("transferForm").addEventListener("submit", function(event) {
+        event.preventDefault();
+        
+        const form = event.target;
+        const formData = new FormData(form);
+        const submitBtn = form.querySelector('button[type="submit"]');
+        const originalBtnText = submitBtn.innerHTML;
+        
+        // Validation
+        const amount = parseFloat(formData.get('amount'));
+        if (isNaN(amount) || amount <= 0) {
+          showAlert('error', 'Please enter a valid amount');
+          return;
+        }
+        
+        // Show loading state
+        submitBtn.innerHTML = '<i class="fas fa-spinner fa-spin"></i> Processing...';
+        submitBtn.disabled = true;
+        
+        fetch("../backend/transfer.php", {
+          method: "POST",
+          body: formData,
+          credentials: 'include'
+        })
+          .then(response => response.json())
+          .then(data => {
+            if (data.error) {
+              showAlert('error', data.error);
+              return;
+            }
+            
+            showAlert('success', 'Transfer successful!');
+            form.reset();
+            fetchCurrentBalance();
+          })
+          .catch(error => {
+            console.error("Transfer error:", error);
+            showAlert('error', 'An error occurred. Please try again.');
+          })
+          .finally(() => {
+            submitBtn.innerHTML = originalBtnText;
+            submitBtn.disabled = false;
+          });
+      });
+    });
+
+    function fetchCurrentBalance() {
+      fetch("../backend/get_balance.php", {
+        credentials: 'include'
+      })
+        .then(response => response.json())
+        .then(data => {
+          if (data.balance !== undefined) {
+            document.getElementById("current-balance").textContent = 
+              `KES ${parseFloat(data.balance).toFixed(2)}`;
+          }
+        });
+    }
+
+    function showAlert(type, message) {
+      const alertDiv = document.getElementById("alert-message");
+      alertDiv.innerHTML = ` 
+        <i class="fas ${type === 'success' ? 'fa-check-circle' : 'fa-exclamation-circle'}"></i>
+        ${message}
+      `;
+      alertDiv.className = `alert alert-${type}`;
+      alertDiv.style.display = 'flex';
+      
+      setTimeout(() => {
+        alertDiv.style.display = 'none';
+      }, 5000);
+    }
+  </script>
+</body>
+</html>
+

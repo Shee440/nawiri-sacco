@@ -1,0 +1,339 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+  <title>Deposit - Nawiri Sacco</title>
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+  <style>
+    :root {
+      --primary-color: #2563eb;
+      --primary-dark: #1d4ed8;
+      --secondary-color: #3a86ff;
+      --success-color: #6328a7;
+      --danger-color: #dc3545;
+      --light-gray: #f8f9fa;
+      --medium-gray: #e9ecef;
+      --dark-gray: #495057;
+      --white: #ffffff;
+      --shadow: 0 4px 12px rgba(0, 0, 0, 0.1);
+      --border-radius: 8px;
+    }
+    
+    body {
+      font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+      background: linear-gradient(135deg, #f5f7fa 0%, #e4e8eb 100%);
+      margin: 0;
+      padding: 0;
+      display: flex;
+      justify-content: center;
+      align-items: center;
+      min-height: 100vh;
+    }
+    
+    .deposit-container {
+      background: var(--white);
+      border-radius: var(--border-radius);
+      box-shadow: var(--shadow);
+      padding: 2.5rem;
+      width: 100%;
+      max-width: 450px;
+      margin: 1rem;
+    }
+    
+    .header {
+      text-align: center;
+      margin-bottom: 2rem;
+    }
+    
+    .logo {
+      width: 60px;
+      height: 60px;
+      background-color: var(--primary-color);
+      border-radius: 50%;
+      display: inline-flex;
+      align-items: center;
+      justify-content: center;
+      color: white;
+      font-size: 1.5rem;
+      font-weight: bold;
+      margin-bottom: 1rem;
+    }
+    
+    h2 {
+      color: var(--primary-color);
+      margin-bottom: 0.5rem;
+    }
+    
+    .subtitle {
+      color: var(--dark-gray);
+      margin-bottom: 1.5rem;
+    }
+    
+    .form-group {
+      margin-bottom: 1.5rem;
+    }
+    
+    label {
+      display: block;
+      margin-bottom: 0.5rem;
+      font-weight: 600;
+      color: var(--dark-gray);
+    }
+    
+    .input-with-icon {
+      position: relative;
+    }
+    
+    .input-with-icon i {
+      position: absolute;
+      left: 0.75rem;
+      top: 50%;
+      transform: translateY(-50%);
+      color: var(--primary-color);
+    }
+    
+    .input-with-icon input {
+      padding-left: 2.5rem;
+    }
+    
+    input[type="number"] {
+      width: 100%;
+      padding: 0.75rem;
+      border: 1px solid var(--medium-gray);
+      border-radius: var(--border-radius);
+      font-family: inherit;
+      font-size: 1rem;
+      transition: all 0.3s ease;
+    }
+    
+    input[type="number"]:focus {
+      outline: none;
+      border-color: var(--primary-color);
+      box-shadow: 0 0 0 3px rgba(46, 139, 87, 0.2);
+    }
+    
+    .btn {
+      background: var(--primary-color);
+      color: white;
+      padding: 0.75rem;
+      border: none;
+      border-radius: var(--border-radius);
+      font-weight: 600;
+      font-size: 1rem;
+      cursor: pointer;
+      width: 100%;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      gap: 0.5rem;
+      transition: all 0.3s ease;
+    }
+    
+    .btn:hover {
+      background: var(--primary-dark);
+      transform: translateY(-2px);
+      box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+    }
+    
+    .btn i {
+      font-size: 1rem;
+    }
+    
+    .alert {
+      padding: 1rem;
+      border-radius: var(--border-radius);
+      margin-bottom: 1.5rem;
+      display: none;
+      align-items: center;
+      gap: 0.75rem;
+    }
+    
+    .alert-success {
+      background-color: #d4edda;
+      color: #123a8f;
+      display: flex;
+    }
+    
+    .alert-error {
+      background-color: #f8d7da;
+      color: #721c24;
+      display: flex;
+    }
+    
+    .alert i {
+      font-size: 1.2rem;
+    }
+    
+    .account-balance {
+      background: var(--light-gray);
+      padding: 1rem;
+      border-radius: var(--border-radius);
+      margin-bottom: 1.5rem;
+      text-align: center;
+      font-weight: 600;
+    }
+    
+    .account-balance span {
+      color: var(--primary-color);
+      font-size: 1.2rem;
+    }
+    
+    @media (max-width: 480px) {
+      .deposit-container {
+        padding: 1.5rem;
+      }
+      
+      .logo {
+        width: 50px;
+        height: 50px;
+        font-size: 1.2rem;
+      }
+      
+      h2 {
+        font-size: 1.3rem;
+      }
+    }
+  </style>
+</head>
+<body>
+
+  <div class="deposit-container">
+    <div class="header">
+      <div class="logo">NS</div>
+      <h2>Deposit Funds</h2>
+      <p class="subtitle">Add money to your Nawiri Sacco account</p>
+    </div>
+    
+    <!-- Alert messages -->
+    <div id="alert-message" class="alert" style="display: none;"></div>
+    
+    <!-- Current balance display -->
+    <div class="account-balance">
+      Current Balance: <span id="current-balance">KES 0.00</span>
+    </div>
+    
+    <form id="deposit-form">
+      <div class="form-group">
+        <label for="deposit-amount">Deposit Amount (KES)</label>
+        <div class="input-with-icon">
+          <i class="fas fa-money-bill-wave"></i>
+          <input type="number" id="deposit-amount" name="deposit_amount" 
+                 placeholder="Enter amount" required min="1" step="0.01">
+        </div>
+      </div>
+      
+      <div class="form-group">
+        <label for="deposit-method">Deposit Method</label>
+        <select id="deposit-method" name="deposit_method" class="input-with-icon" required>
+          <option value="" disabled selected>Select deposit method</option>
+          <option value="mpesa">M-Pesa</option>
+          <option value="bank_transfer">Bank Transfer</option>
+          <option value="cash">Cash Deposit</option>
+          <option value="cheque">Cheque</option>
+        </select>
+      </div>
+      
+      <button type="submit" class="btn">
+        <i class="fas fa-coins"></i> Deposit Funds
+      </button>
+    </form>
+  </div>
+<script>
+  document.addEventListener("DOMContentLoaded", function() {
+    const depositForm = document.getElementById('deposit-form');
+    const balanceElement = document.getElementById('current-balance');
+    const alertMessage = document.getElementById('alert-message');
+
+    // Fetch and display current balance
+    async function fetchBalance() {
+        try {
+            const response = await fetch('../backend/get_balance.php', {
+                method: 'GET',
+                credentials: 'include'
+            });
+            
+            const data = await response.json();
+            
+            if (data.error) {
+                showAlert('error', data.error);
+                balanceElement.textContent = 'KES 0.00';
+                return;
+            }
+            
+            if (data.balance !== undefined) {
+                balanceElement.textContent = `KES ${parseFloat(data.balance).toFixed(2)}`;
+            }
+        } catch (error) {
+            console.error('Balance fetch error:', error);
+            showAlert('error', 'Failed to fetch balance');
+            balanceElement.textContent = 'KES 0.00';
+        }
+    }
+
+    // Handle deposit form submission
+    async function handleDeposit(e) {
+        e.preventDefault();
+        const formData = new FormData(depositForm);
+        const submitButton = depositForm.querySelector('button[type="submit"]');
+        const originalButtonHTML = submitButton.innerHTML;
+
+        try {
+            // Disable button and show loading state
+            submitButton.innerHTML = '<i class="fas fa-spinner fa-spin"></i> Processing...';
+            submitButton.disabled = true;
+
+            const response = await fetch('../backend/deposit.php', {
+                method: 'POST',
+                body: formData,
+                credentials: 'include'
+            });
+
+            const result = await response.json();
+
+            // Handle error
+            if (result.error) {
+                showAlert('error', result.error);
+                return;
+            }
+
+            // Handle success
+            if (result.success) {
+                showAlert('success', result.success);
+                await fetchBalance(); // Refresh balance after successful deposit
+                depositForm.reset(); // Clear form fields
+            }
+
+        
+        } finally {
+            // Reset button state
+            submitButton.innerHTML = originalButtonHTML;
+            submitButton.disabled = false;
+        }
+    }
+
+    // Show alert messages
+    function showAlert(type, message) {
+        alertMessage.innerHTML = `
+            <i class="fas ${type === 'success' ? 'fa-check-circle' : 'fa-exclamation-circle'}"></i>
+            ${message}
+        `;
+        alertMessage.className = `alert alert-${type}`;
+        alertMessage.style.display = 'flex';
+
+        // Hide alert after 5 seconds
+        setTimeout(() => {
+            alertMessage.style.display = 'none';
+        }, 5000);
+    }
+
+    // Event listeners
+    depositForm.addEventListener('submit', handleDeposit);
+    
+    // Initial balance fetch
+    fetchBalance();
+});
+
+</script>
+</body>
+</html>
