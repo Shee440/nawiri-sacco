@@ -79,4 +79,6 @@ It supports both **administrators**;who manage the sacco  and **members**;who ca
 - PHP 7.4 or higher
 - MySQL
 - XAMPP / WAMP / Built-in PHP Server
+
+  
 @Nawiri Sacco Management System
