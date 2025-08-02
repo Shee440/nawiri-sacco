@@ -83,5 +83,5 @@ It supports both **administrators**;who manage the sacco  and **members**;who ca
   
 **@NAWIRI SACCO SYSTEM**
 
-**Github Repository (https://github.com/Shee440/nawiri-sacco-copy)**
+**Github Repository (https://github.com/Shee440/nawiri-sacco-system)**
 
